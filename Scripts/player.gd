@@ -57,10 +57,30 @@ func _physics_process(delta: float) -> void:
 
 	move_and_slide()
 	
+	
 	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) && gun_cd == 0.0:
+		var cam = $RotateCamera/Hold/Camera3D
+		var mousepos = get_viewport().get_mouse_position()
+		
+		var origin = cam.project_ray_origin(mousepos)
+		var end = origin + cam.project_ray_normal(mousepos) * 1000
+		
+		var query = PhysicsRayQueryParameters3D.create(origin, end)
+		query.collide_with_areas = true
+		query.collide_with_bodies = true
+		query.exclude = [get_rid()]
+		
+		var result = get_world_3d().direct_space_state.intersect_ray(query)
+		
+		var target = end
+		if result:
+			target = result.position
+		
 		var b = bullet.instantiate()
-		b.rotation = rotation
-		b.position = position
-		b.position.y += 1
+		get_tree().current_scene.add_child(b)
+		
+		b.global_position = global_position + Vector3.UP
+		b.target = target
+		
 		gun_cd = 1.0
-		$"..".add_child(b)
+		

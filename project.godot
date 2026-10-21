@@ -11,13 +11,14 @@ config_version=5
 [application]
 
 config/name="ArcKnights"
-run/main_scene="uid://bo666o33iy8v0"
+run/main_scene="uid://dw1noq4ddjugc"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 config/icon="res://icon.svg"
 
 [autoload]
 
 RoomMaker="*uid://ba1eqp0inakg6"
+SceneLoader="*uid://b1ronptwhtfd1"
 
 [display]
 

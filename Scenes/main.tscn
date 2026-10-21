@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://dw1noq4ddjugc"]
+
+[ext_resource type="Script" uid="uid://dbn81dk1g8qhl" path="res://StartGameLoop.gd" id="1_jjgbg"]
+
+[node name="Main" type="Node" unique_id=1859692433]
+script = ExtResource("1_jjgbg")

@@ -1,0 +1,40 @@
+[gd_scene format=3 uid="uid://dawvsb2xl2ife"]
+
+[ext_resource type="Script" uid="uid://b7oebwd4y3nxd" path="res://loading_screen.gd" id="1_oobaa"]
+
+[node name="Loading Screen" type="Panel" unique_id=1131154571]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_oobaa")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=352008158]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.40832946, 0.40832946, 0.40832946, 1)
+
+[node name="ProgressBarTop" type="ProgressBar" parent="." unique_id=413817376]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 27.0
+grow_horizontal = 2
+show_percentage = false
+
+[node name="ProgressBarBottom" type="ProgressBar" parent="." unique_id=1275577186]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -27.0
+grow_horizontal = 2
+grow_vertical = 0
+fill_mode = 1
+show_percentage = false

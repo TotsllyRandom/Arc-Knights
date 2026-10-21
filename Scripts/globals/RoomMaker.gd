@@ -26,10 +26,15 @@ func append_sect(sect, tilemap):
 	
 	for y in range(sect_size + 2):
 		for x in range(sect_size + 2):
+				
+			
 			var target_y = starting_pos.y + y
 			var target_x = starting_pos.x + x
 			
-			tilemap[target_y][target_x] = "H"
+			if sect["type"] == "exit":
+				tilemap[target_y][target_x] = "E"
+			else:
+				tilemap[target_y][target_x] = "H"
 			
 			if x == 0 && sect["doors"][0] != 0:
 				if tilemap[target_y][target_x] != "W":

@@ -1,13 +1,14 @@
 extends Node3D
 
-var tile_scene = preload("res://Scenes/tile.tscn")
-var wall_scene = preload("res://Scenes/wall.tscn")
+var tile_scene = load("res://Scenes/tile.tscn")
+var wall_scene = load("res://Scenes/wall.tscn")
 
 var tilemap = []
 var sects = []
 
 var max_room := 7
 var max_strand := 20
+var biggest_strand := 0
 
 var room_data = []
 
@@ -16,7 +17,8 @@ var base_sect = {
 					"pos":Vector2i(0,0),
 					"made":false,
 					"room":-1,
-					"strand":0
+					"strand":0,
+					"type":"room"
 				}
 
 var base_room = {
@@ -45,7 +47,7 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("Reset"):
-		make_tile_map()
+		SceneLoader.load_level("res://Scenes/dungeon.tscn")
 
 func build_tiles():
 	for y in range(len(tilemap)):
@@ -59,6 +61,9 @@ func build_tiles():
 			elif tilemap[y][x] == "D":
 				new_tile = wall_scene.instantiate()
 				new_tile.type = "door"
+			elif tilemap[y][x] == "E":
+				new_tile = tile_scene.instantiate()
+				
 			else:
 				new_tile = tile_scene.instantiate()
 			new_tile.position = Vector3(
@@ -90,7 +95,16 @@ func make_tile_map() -> void:
 		for sect in sects:
 			if sect["strand"] == current_sect:
 				make_sect(sect["pos"])
+				biggest_strand = current_sect
 		current_sect += 1
+	
+	var rand = []
+	for sect in sects:
+		if sect["strand"] == biggest_strand && sect["type"] == "room":
+			rand.append(sect["pos"])
+	
+	
+	sects[get_sect(rand[randi_range(0,len(rand)-1)])]["type"] = "exit"
 	
 	for sect in range(len(sects)):
 		var new_doors = [0,0,0,0,]
@@ -114,6 +128,7 @@ func make_tile_map() -> void:
 	tilemap = RoomMaker.make_empty_map(sects)
 	for sect in sects:
 		tilemap = RoomMaker.append_sect(sect, tilemap)
+	
 	build_tiles()
 	
 	var origin_start_x = (-RoomMaker.min_pos.x) * (RoomMaker.sect_size + 1)
@@ -138,6 +153,7 @@ func make_sect(pos):
 		var app = base_sect.duplicate(true)
 		app["room"] = len(room_data)
 		room_data.append(1)
+		app["type"] = "enter"
 		app["strand"] = 1
 		sects.append(app)
 	var sect = sects[sect_num]

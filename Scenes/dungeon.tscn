@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bc86nw50w8xv4" path="res://Scripts/dungeon.gd" id="1_oavya"]
 [ext_resource type="PackedScene" uid="uid://mpu4r0vb0drw" path="res://Scenes/Player.tscn" id="2_dakn4"]
+[ext_resource type="PackedScene" uid="uid://brjeo3f4ce8rx" path="res://Scenes/interact_text.tscn" id="3_lt7kh"]
 
 [sub_resource type="Environment" id="Environment_cjkyl"]
 background_mode = 1
@@ -16,6 +17,17 @@ fog_height_density = 2.4615
 
 [node name="Dungeon" type="Node3D" unique_id=1328486359]
 script = ExtResource("1_oavya")
+
+[node name="InteractText" parent="." unique_id=103423425 instance=ExtResource("3_lt7kh")]
+offset_left = -1198.0
+offset_top = -1449.0
+offset_right = -1099.0
+offset_bottom = -1322.0
+text = "End Run - [E]
+
+
+
+"
 
 [node name="Player" parent="." unique_id=201644643 instance=ExtResource("2_dakn4")]
 
