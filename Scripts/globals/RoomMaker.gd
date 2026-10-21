@@ -1,6 +1,6 @@
 extends Node
 
-var sect_size := 3
+var sect_size := 7
 var min_pos := Vector2i(0,0)
 var max_pos := Vector2i(0,0)
 
@@ -29,8 +29,31 @@ func append_sect(sect, tilemap):
 			var target_y = starting_pos.y + y
 			var target_x = starting_pos.x + x
 			
-			if x == 0 || y == 0 || x == sect_size + 1 || y == sect_size + 1:
-				tilemap[target_y][target_x] = "W"
-			else:
-				tilemap[target_y][target_x] = "H"
+			tilemap[target_y][target_x] = "H"
+			
+			if x == 0 && sect["doors"][0] != 0:
+				if tilemap[target_y][target_x] != "W":
+					if sect["doors"][0] == 1:
+						tilemap[target_y][target_x] = "W"
+					else:
+						tilemap[target_y][target_x] = "D"
+			if y == 0 && sect["doors"][1] != 0:
+				if tilemap[target_y][target_x] != "W":
+					if sect["doors"][1] == 1:
+						tilemap[target_y][target_x] = "W"
+					else:
+						tilemap[target_y][target_x] = "D"
+			if x == sect_size + 1 && sect["doors"][2] != 0:
+				if tilemap[target_y][target_x] != "W":
+					if sect["doors"][2] == 1:
+						tilemap[target_y][target_x] = "W"
+					else:
+						tilemap[target_y][target_x] = "D"
+			if y == sect_size + 1 && sect["doors"][3] != 0:
+				if tilemap[target_y][target_x] != "W":
+					if sect["doors"][3] == 1:
+						tilemap[target_y][target_x] = "W"
+					else:
+						tilemap[target_y][target_x] = "D"
+			
 	return tilemap

@@ -7,7 +7,7 @@ var tilemap = []
 var sects = []
 
 var max_room := 7
-var max_strand := 5
+var max_strand := 20
 
 var room_data = []
 
@@ -92,7 +92,24 @@ func make_tile_map() -> void:
 				make_sect(sect["pos"])
 		current_sect += 1
 	
-	print(sects)
+	for sect in range(len(sects)):
+		var new_doors = [0,0,0,0,]
+		var pos = sects[sect]["pos"]
+		var room = sects[sect]["room"]
+		
+		if sects[get_sect(Vector2i(pos.x-1,pos.y))]["room"] != room || get_sect(Vector2i(pos.x-1,pos.y)) == -1:
+			new_doors[0] = 1
+		if sects[get_sect(Vector2i(pos.x,pos.y-1))]["room"] != room || get_sect(Vector2i(pos.x,pos.y-1)) == -1:
+			new_doors[1] = 1
+		if sects[get_sect(Vector2i(pos.x+1,pos.y))]["room"] != room || get_sect(Vector2i(pos.x+1,pos.y)) == -1:
+			new_doors[2] = 1
+		if sects[get_sect(Vector2i(pos.x,pos.y+1))]["room"] != room || get_sect(Vector2i(pos.x,pos.y+1)) == -1:
+			new_doors[3] = 1
+		
+		if sects[sect]["doors"] != []:
+			for door in sects[sect]["doors"]:
+				new_doors[door] = 2
+		sects[sect]["doors"] = new_doors
 	
 	tilemap = RoomMaker.make_empty_map(sects)
 	for sect in sects:
@@ -142,7 +159,11 @@ func make_sect(pos):
 				if room_data[new_sect["room"]] >= max_room:
 					new_sect["room"] = len(room_data)
 					room_data.append(0)
-					new_sect["doors"].append(door)
+					var new_door = door + 2
+					if new_door >= 4:
+						new_door -= 4
+					sects[sect_num]["doors"].append(door)
+					new_sect["doors"].append(new_door)
 				room_data[new_sect["room"]] += 1
 				new_sect["strand"] = sect["strand"] + 1
 				sects.append(new_sect)
