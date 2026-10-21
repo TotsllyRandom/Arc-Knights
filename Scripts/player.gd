@@ -1,7 +1,14 @@
 extends CharacterBody3D
 
+var gun_cd := 0.0:
+	set(new):
+		if new <= 0:
+			gun_cd = 0.0
+		else:
+			gun_cd = new
 
 @onready var cam_rotate = $RotateCamera
+var bullet = preload("res://Scenes/bullet.tscn")
 
 const SPEED = 5.0
 const JUMP_VELOCITY = 4.5
@@ -25,6 +32,7 @@ func _ready() -> void:
 	target_rotation.x = cam_rotate.rotation.x
 
 func _physics_process(delta: float) -> void:
+	gun_cd -= delta
 	check_camera_controls()
 	rotation.y = lerp_angle(rotation.y,target_rotation.y, .3)
 	cam_rotate.rotation.x = lerp_angle(cam_rotate.rotation.x,target_rotation.x, .3)
@@ -48,3 +56,11 @@ func _physics_process(delta: float) -> void:
 		velocity.z = move_toward(velocity.z, 0, SPEED)
 
 	move_and_slide()
+	
+	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) && gun_cd == 0.0:
+		var b = bullet.instantiate()
+		b.rotation = rotation
+		b.position = position
+		b.position.y += 1
+		gun_cd = 1.0
+		$"..".add_child(b)
