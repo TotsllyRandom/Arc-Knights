@@ -3,6 +3,17 @@
 [ext_resource type="Script" uid="uid://bc86nw50w8xv4" path="res://Scripts/dungeon.gd" id="1_oavya"]
 [ext_resource type="PackedScene" uid="uid://mpu4r0vb0drw" path="res://Scenes/Player.tscn" id="2_dakn4"]
 
+[sub_resource type="Environment" id="Environment_cjkyl"]
+background_mode = 1
+background_energy_multiplier = 16.0
+ambient_light_energy = 16.0
+reflected_light_source = 2
+fog_enabled = true
+fog_light_color = Color(0, 0, 0, 1)
+fog_light_energy = 8.54
+fog_density = 0.0769
+fog_height_density = 2.4615
+
 [node name="Dungeon" type="Node3D" unique_id=1328486359]
 script = ExtResource("1_oavya")
 
@@ -20,9 +31,12 @@ current = true
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="Player/RotateCamera/Hold" unique_id=1886366751]
 transform = Transform3D(1.0000001, 0, 0, 0, 1, 0, 0, 2.9802322e-08, 1, 0, 0, 0)
-light_energy = 2.0
-light_indirect_energy = 1.09
+light_energy = 0.75
+light_volumetric_fog_energy = 16.0
 shadow_enabled = true
 sky_mode = 1
 
 [node name="Ground" type="Node3D" parent="." unique_id=183039139]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=914039861]
+environment = SubResource("Environment_cjkyl")

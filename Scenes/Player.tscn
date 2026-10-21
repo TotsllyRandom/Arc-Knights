@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://mpu4r0vb0drw"]
 
-[ext_resource type="Script" uid="uid://ckc2bhqrtdwls" path="res://scripts/player.gd" id="1_rpqav"]
+[ext_resource type="Script" uid="uid://ckc2bhqrtdwls" path="res://Scripts/player.gd" id="1_rpqav"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_rfg2h"]
 
@@ -14,6 +14,11 @@ transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 1, 0)
 mesh = SubResource("CapsuleMesh_rfg2h")
 
 [node name="OmniLight3D" type="OmniLight3D" parent="MeshInstance3D" unique_id=1875700558]
+light_energy = 10.347
+light_indirect_energy = 3.297
+light_volumetric_fog_energy = 3.62
+light_size = 1.0
+light_specular = 1.35
 shadow_enabled = true
 distance_fade_enabled = true
 

@@ -1,9 +1,16 @@
 [gd_scene format=3 uid="uid://cmhtjn1k5efff"]
 
-[ext_resource type="Script" uid="uid://tsqpx7jor6c5" path="res://scripts/wall.gd" id="1_d155t"]
+[ext_resource type="Script" uid="uid://tsqpx7jor6c5" path="res://Scripts/wall.gd" id="1_d155t"]
+[ext_resource type="Texture2D" uid="uid://8g0sm82nel1p" path="res://assets/resources/bricktest.jpeg" id="2_yjehn"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_cjkyl"]
 size = Vector3(1, 4, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_03ltx"]
+albedo_texture = ExtResource("2_yjehn")
+albedo_texture_force_srgb = true
+distance_fade_min_distance = 10.0
+distance_fade_max_distance = 1702.73
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_cjkyl"]
 size = Vector3(1, 4, 1)
@@ -15,6 +22,7 @@ script = ExtResource("1_d155t")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=617726432]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
 mesh = SubResource("BoxMesh_cjkyl")
+surface_material_override/0 = SubResource("StandardMaterial3D_03ltx")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=7858624]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)

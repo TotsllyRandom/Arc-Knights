@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://c038avrpeypiy"]
+
+[ext_resource type="Script" uid="uid://1b7jrhdvqqt4" path="res://Scripts/bullet.gd" id="1_xjght"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_cjkyl"]
+radius = 0.1
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rfg2h"]
+albedo_color = Color(18.892157, 18.892157, 18.892157, 1)
+disable_receive_shadows = true
+
+[sub_resource type="SphereMesh" id="SphereMesh_cjkyl"]
+material = SubResource("StandardMaterial3D_rfg2h")
+radius = 0.1
+height = 0.2
+
+[node name="Area2D" type="Area3D" unique_id=1394986036]
+collision_layer = 0
+script = ExtResource("1_xjght")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=281251081]
+shape = SubResource("SphereShape3D_cjkyl")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=582748844]
+cast_shadow = 0
+mesh = SubResource("SphereMesh_cjkyl")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="MeshInstance3D" unique_id=146124101]
+omni_range = 1.5
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
