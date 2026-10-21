@@ -41,19 +41,16 @@ const TILE_INCREMENT := sqrt(0.5)
 
 func _ready() -> void:
 	make_tile_map()
-	#var plrx := (float(len(tilemap[0])-1))/2
-	#var plry := (float(len(tilemap)-1))/2
-	#$Player.position = Vector3(
-	#	(plrx-plry) * TILE_INCREMENT,
-	#	5,
-	#	(plrx+plry) * TILE_INCREMENT
-	#)
 	
+
+func _process(delta: float) -> void:
+	if Input.is_action_just_pressed("Reset"):
+		make_tile_map()
 
 func build_tiles():
 	for y in range(len(tilemap)):
 		for x in range(len(tilemap[y])):
-			if tilemap[y][x] == " ":
+			if tilemap[y][x] == "X":
 				continue
 			var new_tile : Node3D
 			if tilemap[y][x] == "W":
@@ -80,7 +77,11 @@ func get_sect(pos:Vector2i):
 	return ret
 
 func make_tile_map() -> void:
+	sects.clear()
+	room_data.clear()
 	tilemap.clear()
+	for child in $Ground.get_children():
+		child.queue_free()
 	
 	make_sect(Vector2i(0,0))
 	
@@ -92,7 +93,26 @@ func make_tile_map() -> void:
 		current_sect += 1
 	
 	print(sects)
+	
+	tilemap = RoomMaker.make_empty_map(sects)
+	for sect in sects:
+		tilemap = RoomMaker.append_sect(sect, tilemap)
 	build_tiles()
+	
+	var origin_start_x = (-RoomMaker.min_pos.x) * (RoomMaker.sect_size + 1)
+	var origin_start_y = (-RoomMaker.min_pos.y) * (RoomMaker.sect_size + 1)
+	
+	var middle_offset = float(RoomMaker.sect_size + 1) / 2.0
+	
+	var plrx: float = origin_start_x + middle_offset
+	var plry: float = origin_start_y + middle_offset
+	
+	$Player.position = Vector3(
+		(plrx - plry) * TILE_INCREMENT,
+		5.0,
+		(plrx + plry) * TILE_INCREMENT
+	)
+
 
 func make_sect(pos):
 	var sect_num = get_sect(pos)

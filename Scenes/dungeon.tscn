@@ -3,12 +3,6 @@
 [ext_resource type="Script" uid="uid://bc86nw50w8xv4" path="res://Scripts/dungeon.gd" id="1_oavya"]
 [ext_resource type="PackedScene" uid="uid://mpu4r0vb0drw" path="res://Scenes/Player.tscn" id="2_dakn4"]
 
-[sub_resource type="BoxMesh" id="BoxMesh_dakn4"]
-size = Vector3(10, 0.5, 10)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_g4v7s"]
-size = Vector3(10, 0.5, 10)
-
 [node name="Dungeon" type="Node3D" unique_id=1328486359]
 script = ExtResource("1_oavya")
 
@@ -32,13 +26,3 @@ shadow_enabled = true
 sky_mode = 1
 
 [node name="Ground" type="Node3D" parent="." unique_id=183039139]
-
-[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=1013099311]
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D" unique_id=1551209755]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
-mesh = SubResource("BoxMesh_dakn4")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=284256192]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
-shape = SubResource("BoxShape3D_g4v7s")
