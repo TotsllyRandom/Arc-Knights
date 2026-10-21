@@ -25,6 +25,10 @@ SceneLoader="*uid://b1ronptwhtfd1"
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/godot_super-wakatime/plugin.cfg")
+
 [input]
 
 Player_Camera_Left={
