@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://cmhtjn1k5efff"]
+
+[ext_resource type="Script" uid="uid://tsqpx7jor6c5" path="res://scripts/wall.gd" id="1_d155t"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_cjkyl"]
+size = Vector3(1, 4, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_cjkyl"]
+size = Vector3(1, 4, 1)
+
+[node name="Wall" type="StaticBody3D" unique_id=1714951645]
+transform = Transform3D(0.70710677, 0, 0.70710677, 0, 1, 0, -0.70710677, 0, 0.70710677, 0, 0, 0)
+script = ExtResource("1_d155t")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=617726432]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+mesh = SubResource("BoxMesh_cjkyl")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=7858624]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+shape = SubResource("BoxShape3D_cjkyl")

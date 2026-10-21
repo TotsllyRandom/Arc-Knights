@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://bfpdfi0r3p23b"]
+
+[ext_resource type="Script" uid="uid://r241266tlot8" path="res://scripts/tile.gd" id="1_xsjyq"]
+[ext_resource type="Texture2D" uid="uid://cbu4jren3v3bd" path="res://assets/TileTest.png" id="2_rvq8p"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cjkyl"]
+albedo_texture = ExtResource("2_rvq8p")
+stencil_flags = 2
+stencil_outline_thickness = 0.07
+
+[sub_resource type="BoxMesh" id="BoxMesh_cjkyl"]
+material = SubResource("StandardMaterial3D_cjkyl")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_rfg2h"]
+
+[node name="Tile" type="StaticBody3D" unique_id=109192371]
+script = ExtResource("1_xsjyq")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=400247797]
+transform = Transform3D(0.70710677, 0, -0.70710677, 0, 1, 0, 0.70710677, 0, 0.70710677, 0, 0.5, 0)
+mesh = SubResource("BoxMesh_cjkyl")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1866311462]
+transform = Transform3D(0.70710677, 0, 0.70710677, 0, 1, 0, -0.70710677, 0, 0.70710677, 0, 0.5, 0)
+shape = SubResource("BoxShape3D_rfg2h")
