@@ -5,7 +5,7 @@ var loading_screen = preload("res://Scenes/loading_screen.tscn")
 
 func load_level(path: String) -> void:
 	var screen = loading_screen.instantiate()
-	get_tree().root.add_child(screen)
+	get_tree().root.add_child.call_deferred(screen)
 
 	screen.set_progress(0.0)
 

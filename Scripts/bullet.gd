@@ -9,7 +9,7 @@ var direction: Vector3 = Vector3.ZERO
 		look_at(target, Vector3.UP)
 		if direction == Vector3.ZERO:
 			direction = -global_transform.basis.z.normalized()
-			global_position += direction * 3
+			global_position += direction
 
 
 func _physics_process(delta: float) -> void:

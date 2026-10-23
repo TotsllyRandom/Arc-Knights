@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://dawvsb2xl2ife"]
 
-[ext_resource type="Script" uid="uid://b7oebwd4y3nxd" path="res://loading_screen.gd" id="1_oobaa"]
+[ext_resource type="Script" uid="uid://b7oebwd4y3nxd" path="res://Scripts/loading_screen.gd" id="1_oobaa"]
 
 [node name="Loading Screen" type="Panel" unique_id=1131154571]
 anchors_preset = 15

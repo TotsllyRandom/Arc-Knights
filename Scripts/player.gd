@@ -32,6 +32,8 @@ func _ready() -> void:
 	target_rotation.x = cam_rotate.rotation.x
 
 func _physics_process(delta: float) -> void:
+	if position.y <= -5:
+		position.y = 5
 	gun_cd -= delta
 	check_camera_controls()
 	rotation.y = lerp_angle(rotation.y,target_rotation.y, .3)

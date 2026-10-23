@@ -1,0 +1,42 @@
+[gd_scene format=3 uid="uid://b3nxwv7xgw1t2"]
+
+[ext_resource type="Texture2D" uid="uid://b1owwm7hurrx4" path="res://assets/resources/floortest.jpeg" id="1_qc48d"]
+[ext_resource type="Texture2D" uid="uid://8g0sm82nel1p" path="res://assets/resources/bricktest.jpeg" id="2_5e6so"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_le5va"]
+albedo_texture = ExtResource("1_qc48d")
+
+[sub_resource type="BoxMesh" id="BoxMesh_rfg2h"]
+material = SubResource("StandardMaterial3D_le5va")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_rpoaw"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nnumu"]
+albedo_texture = ExtResource("2_5e6so")
+albedo_texture_force_srgb = true
+
+[sub_resource type="BoxMesh" id="BoxMesh_cjkyl"]
+material = SubResource("StandardMaterial3D_nnumu")
+size = Vector3(1, 4, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_c7axu"]
+size = Vector3(1, 4, 1)
+
+[node name="MeshLibrarySource" type="Node3D" unique_id=316203539]
+
+[node name="H" type="MeshInstance3D" parent="." unique_id=441185147]
+mesh = SubResource("BoxMesh_rfg2h")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="H" unique_id=2145294524]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="H/StaticBody3D" unique_id=7617847]
+shape = SubResource("BoxShape3D_rpoaw")
+
+[node name="W" type="MeshInstance3D" parent="." unique_id=1864153572]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1.5, 0)
+mesh = SubResource("BoxMesh_cjkyl")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="W" unique_id=575064402]
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="W/StaticBody3D" unique_id=1778456427]
+shape = SubResource("BoxShape3D_c7axu")

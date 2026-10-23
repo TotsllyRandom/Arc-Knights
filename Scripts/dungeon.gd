@@ -42,7 +42,7 @@ const MAX_STRAND_LENGTH := 5
 const TILE_INCREMENT := sqrt(0.5)
 
 func _ready() -> void:
-	make_tile_map()
+	make_tile_map("new")
 	
 
 func _process(delta: float) -> void:
@@ -50,28 +50,26 @@ func _process(delta: float) -> void:
 		SceneLoader.load_level("res://Scenes/dungeon.tscn")
 
 func build_tiles():
+	$GridMap.clear()
 	for y in range(len(tilemap)):
 		for x in range(len(tilemap[y])):
 			if tilemap[y][x] == "X":
 				continue
 			var new_tile : Node3D
-			if tilemap[y][x] == "W":
-				new_tile = wall_scene.instantiate()
-				new_tile.type = "wall"
-			elif tilemap[y][x] == "D":
+			if tilemap[y][x] == "D":
 				new_tile = wall_scene.instantiate()
 				new_tile.type = "door"
-			elif tilemap[y][x] == "E":
-				new_tile = tile_scene.instantiate()
-				
+				new_tile.position = Vector3(
+					(x-y)*TILE_INCREMENT,
+					0,
+					(x+y)*TILE_INCREMENT,
+				)
+				$Ground.add_child(new_tile)
 			else:
-				new_tile = tile_scene.instantiate()
-			new_tile.position = Vector3(
-				(x-y)*TILE_INCREMENT,
-				0,
-				(x+y)*TILE_INCREMENT,
-			)
-			$Ground.add_child(new_tile)
+				if tilemap[y][x] == "W":
+					$GridMap.set_cell_item(Vector3i(-y,0,x),1)
+				else:
+					$GridMap.set_cell_item(Vector3i(-y,0,x),0)
 				
 
 func get_sect(pos:Vector2i):
@@ -81,7 +79,9 @@ func get_sect(pos:Vector2i):
 			ret = sect
 	return ret
 
-func make_tile_map() -> void:
+func make_tile_map(Ver:String) -> void:
+	minimum = Vector2i(0,0)
+	maximum = Vector2i(0,0)
 	sects.clear()
 	room_data.clear()
 	tilemap.clear()
@@ -103,9 +103,12 @@ func make_tile_map() -> void:
 		if sect["strand"] == biggest_strand && sect["type"] == "room":
 			rand.append(sect["pos"])
 	
+	if len(rand) == 0 || biggest_strand <= max_strand - 5:
+		make_tile_map("Remake")
+		return
 	
 	sects[get_sect(rand[randi_range(0,len(rand)-1)])]["type"] = "exit"
-	
+		
 	for sect in range(len(sects)):
 		var new_doors = [0,0,0,0,]
 		var pos = sects[sect]["pos"]
@@ -119,7 +122,7 @@ func make_tile_map() -> void:
 			new_doors[2] = 1
 		if sects[get_sect(Vector2i(pos.x,pos.y+1))]["room"] != room || get_sect(Vector2i(pos.x,pos.y+1)) == -1:
 			new_doors[3] = 1
-		
+	
 		if sects[sect]["doors"] != []:
 			for door in sects[sect]["doors"]:
 				new_doors[door] = 2

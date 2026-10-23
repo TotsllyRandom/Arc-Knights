@@ -5,6 +5,8 @@ var min_pos := Vector2i(0,0)
 var max_pos := Vector2i(0,0)
 
 func make_empty_map(sects:Array):
+	min_pos = Vector2i.ZERO
+	max_pos = Vector2i.ZERO
 	
 	for sect in sects:
 		min_pos = Vector2i(min(min_pos.x, sect["pos"].x),min(min_pos.y, sect["pos"].y))
