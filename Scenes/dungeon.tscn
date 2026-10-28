@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://bc86nw50w8xv4" path="res://Scripts/dungeon.gd" id="1_oavya"]
 [ext_resource type="PackedScene" uid="uid://mpu4r0vb0drw" path="res://Scenes/Player.tscn" id="2_dakn4"]
 [ext_resource type="PackedScene" uid="uid://brjeo3f4ce8rx" path="res://Scenes/interact_text.tscn" id="3_lt7kh"]
+[ext_resource type="PackedScene" uid="uid://cc3kr1u2cgjl4" path="res://Scenes/enemy.tscn" id="4_iqbxe"]
 [ext_resource type="MeshLibrary" uid="uid://nokokh0tem3x" path="res://assets/resources/MeshLibrary.tres" id="4_l3tba"]
 
 [sub_resource type="Environment" id="Environment_cjkyl"]
@@ -41,6 +42,10 @@ shadow_enabled = true
 sky_mode = 1
 
 [node name="Ground" type="Node3D" parent="." unique_id=183039139]
+
+[node name="Enemies" type="Node3D" parent="." unique_id=215396664]
+
+[node name="Enemy" parent="Enemies" unique_id=1939978913 instance=ExtResource("4_iqbxe")]
 
 [node name="GridMap" type="GridMap" parent="." unique_id=224245994]
 transform = Transform3D(0.70710677, 0, 0.70710677, 0, 1, 0, -0.70710677, 0, 0.70710677, 0, 0.5, 0)
