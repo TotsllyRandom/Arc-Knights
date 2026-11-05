@@ -6,17 +6,6 @@
 [ext_resource type="PackedScene" uid="uid://cc3kr1u2cgjl4" path="res://Scenes/enemy.tscn" id="4_iqbxe"]
 [ext_resource type="MeshLibrary" uid="uid://nokokh0tem3x" path="res://assets/resources/MeshLibrary.tres" id="4_l3tba"]
 
-[sub_resource type="Environment" id="Environment_cjkyl"]
-background_mode = 1
-background_energy_multiplier = 16.0
-ambient_light_energy = 16.0
-reflected_light_source = 2
-fog_enabled = true
-fog_light_color = Color(0, 0, 0, 1)
-fog_light_energy = 8.54
-fog_density = 0.0769
-fog_height_density = 2.4615
-
 [node name="Dungeon" type="Node3D" unique_id=1328486359]
 script = ExtResource("1_oavya")
 
@@ -59,4 +48,3 @@ data = {
 }
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=928372273]
-environment = SubResource("Environment_cjkyl")

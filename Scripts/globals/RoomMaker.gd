@@ -1,8 +1,20 @@
 extends Node
 
+var revealed = []
+
+func reveal(room):
+	print("revealing room: " + str(room))
+	if revealed.has(room):
+		return
+	revealed.append(room)
+	reveal_room.emit(room)
+
+signal reveal_room(room)
+
 var sect_size := 7
 var min_pos := Vector2i(0,0)
 var max_pos := Vector2i(0,0)
+
 
 func make_empty_map(sects:Array):
 	min_pos = Vector2i.ZERO
