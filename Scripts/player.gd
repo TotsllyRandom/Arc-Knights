@@ -226,6 +226,7 @@ func create_ammo_label() -> void:
 	ammo_icon_texture.atlas = BULLET_ICON
 	ammo_icon_texture.region = Rect2(0, 0, ICON_FRAME_SIZE, ICON_FRAME_SIZE)
 	ammo_icon = TextureRect.new()
+	ammo_icon.rotation = randi_range(0,4) * 90
 	ammo_icon.texture = ammo_icon_texture
 	ammo_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	ammo_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
