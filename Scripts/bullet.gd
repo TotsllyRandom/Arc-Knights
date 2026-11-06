@@ -1,24 +1,41 @@
 extends Area3D
 
-@export var speed: float = 20.0
-var direction: Vector3 = Vector3.ZERO
+@export var speed: float = 30.0
 
-@export var target : Vector3:
-	set(new):
-		target = new
-		look_at(target, Vector3.UP)
-		if direction == Vector3.ZERO:
-			direction = -global_transform.basis.z.normalized()
-			global_position += direction
+var direction := Vector3.FORWARD
+var damage := 10
+var knockback_scale := 1.0
+var max_range := 30.0
+var distance_travelled := 0.0
 
 
-func _physics_process(delta: float) -> void:
-	# If a custom direction wasn't assigned, default to its own local forward (-Z)
-		
-	# Standard directional movement
-	global_position += direction * speed * delta
+# Called by the player right after the bullet is added to the scene.
+# "weapon" is one of the dictionaries in weapons.gd.
+func launch(origin: Vector3, aim: Vector3, weapon: Dictionary) -> void:
+	global_position = origin
+	direction = aim.normalized()
+	speed = weapon.get("bullet_speed", speed)
+	damage = weapon.get("damage", damage)
+	knockback_scale = weapon.get("knockback_scale", 1.0)
+	max_range = weapon.get("range", max_range)
+	# look_at doesn't work when the direction is straight up or down
+	if direction.cross(Vector3.UP).length() > 0.001:
+		look_at(origin + direction, Vector3.UP)
+
+
+# Moving in _process (instead of _physics_process) keeps the bullet smooth at any frame rate
+func _process(delta: float) -> void:
+	var step := speed * delta
+	global_position += direction * step
+	distance_travelled += step
+	if distance_travelled >= max_range:
+		queue_free()
+
 
 func _on_body_entered(body: Node) -> void:
+	# Never hit the player who fired it
+	if body.is_in_group("player"):
+		return
 	if body.has_method("take_damage"):
-		body.take_damage(10)
+		body.take_damage(damage, direction, knockback_scale)
 	queue_free() # Destroy bullet on impact
