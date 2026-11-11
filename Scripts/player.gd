@@ -23,11 +23,18 @@ const MUZZLE_DISTANCE := 0.8
 const FIRE_BUFFER_TIME := 0.15
 # Short pause after swapping so a swap can't also fire instantly
 const WEAPON_SWITCH_DELAY := 0.2
+# The weapon name shows for this long after switching, then fades out over the second time (in seconds)
+const WEAPON_LABEL_HOLD := 1.0
+const WEAPON_LABEL_FADE := 0.6
+var weapon_label_tween: Tween
 # Pause between "click" attempts when the gun is empty
 const DRY_FIRE_DELAY := 0.2
 # How long a melee lunge takes
 const LUNGE_TIME := 0.12
 
+# Which of the two weapon slots in the inventory is in hand: 0 = Weapon 1, 1 = Weapon 2
+var active_weapon_slot := 0
+# The position of the weapon in hand in Weapons.LIST, or -1 when it's bare fists
 var weapon_index := 0
 var weapon: Dictionary = {}
 var fire_buffer := 0.0
@@ -89,7 +96,9 @@ func _ready() -> void:
 	rotation.y = 0
 	target_rotation.y = rotation.y
 	target_rotation.x = cam_rotate.rotation.x
-	equip_weapon(0)
+	# The weapons come from the two weapon slots in the inventory
+	Inventory.weapons_changed.connect(_on_inventory_weapons_changed)
+	equip_from_slot(0, false)
 
 func _physics_process(delta: float) -> void:
 	if position.y <= -5:
@@ -143,20 +152,41 @@ func is_gun() -> bool:
 	return weapon.get("type", Weapons.Type.GUN) == Weapons.Type.GUN
 
 
-# Switches to the next weapon in the list (wraps around)
+# Switches to the weapon in the other weapon slot (the L key). Does nothing if that slot is empty.
 func swap_weapon() -> void:
-	equip_weapon(weapon_index + 1)
+	var other_slot := 1 - active_weapon_slot
+	if Inventory.get_weapon_index(other_slot) == -1:
+		return
+	equip_from_slot(other_slot)
 
 
-# Equips a weapon by its index in Weapons.LIST and updates the on-screen label.
-# Later, the weapon type will be set from the character's gear by calling this.
-func equip_weapon(index: int) -> void:
+# Puts whatever is in one of the inventory's weapon slots in hand (bare fists if the slot is empty)
+# announce = false equips quietly, without showing the weapon's name on screen
+func equip_from_slot(slot: int, announce: bool = true) -> void:
+	active_weapon_slot = slot
+	equip_weapon(Inventory.get_weapon_index(slot), announce)
+
+
+# The weapon slots were changed on the inventory screen
+func _on_inventory_weapons_changed() -> void:
+	# If the weapon in hand was taken away but the other slot still has one, switch to that
+	if Inventory.get_weapon_index(active_weapon_slot) == -1 and Inventory.get_weapon_index(1 - active_weapon_slot) != -1:
+		active_weapon_slot = 1 - active_weapon_slot
+	equip_from_slot(active_weapon_slot)
+
+
+# Equips a weapon by its index in Weapons.LIST (or -1 for bare fists) and updates the on-screen label.
+func equip_weapon(index: int, announce: bool = true) -> void:
 	# Put the old weapon's ammo away with it
-	if not weapon.is_empty() and is_gun():
+	if not weapon.is_empty() and is_gun() and weapon_index >= 0:
 		ammo_by_weapon[weapon_index] = ammo
 
-	weapon_index = wrapi(index, 0, Weapons.LIST.size())
-	weapon = Weapons.LIST[weapon_index]
+	if index < 0 or index >= Weapons.LIST.size():
+		weapon_index = -1
+		weapon = Weapons.UNARMED
+	else:
+		weapon_index = index
+		weapon = Weapons.LIST[weapon_index]
 	ammo = ammo_by_weapon.get(weapon_index, float(weapon.get("max_ammo", 0)))
 	reload_pause = 0.0
 
@@ -165,15 +195,28 @@ func equip_weapon(index: int) -> void:
 	melee_pending = false
 	fire_buffer = 0.0
 	gun_cd = WEAPON_SWITCH_DELAY
-	update_weapon_label()
+	update_weapon_label(announce)
 	update_ammo_label()
 
 
-# The label that used to say "End Run" now shows the current weapon
-func update_weapon_label() -> void:
+# The weapon's name (on the label that used to say "End Run") only shows when the weapon changes.
+# It appears, stays for a moment, then fades out. show_it = false just sets the text, hidden.
+func update_weapon_label(show_it: bool = true) -> void:
 	var label = get_node_or_null("../InteractText/Label")
-	if label != null:
-		label.text = weapon.get("name", "")
+	if label == null:
+		return
+	label.text = weapon.get("name", "")
+
+	if weapon_label_tween != null:
+		weapon_label_tween.kill()
+	if not show_it:
+		label.modulate.a = 0.0
+		return
+
+	label.modulate.a = 1.0
+	weapon_label_tween = create_tween()
+	weapon_label_tween.tween_interval(WEAPON_LABEL_HOLD)
+	weapon_label_tween.tween_property(label, "modulate:a", 0.0, WEAPON_LABEL_FADE)
 
 
 # Changes the color of the player's light, which recolors bullets and the ammo icon.
@@ -226,7 +269,6 @@ func create_ammo_label() -> void:
 	ammo_icon_texture.atlas = BULLET_ICON
 	ammo_icon_texture.region = Rect2(0, 0, ICON_FRAME_SIZE, ICON_FRAME_SIZE)
 	ammo_icon = TextureRect.new()
-	ammo_icon.rotation = randi_range(0,4) * 90
 	ammo_icon.texture = ammo_icon_texture
 	ammo_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	ammo_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED

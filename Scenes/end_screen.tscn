@@ -1,0 +1,67 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://Scripts/end_screen.gd" id="1_end"]
+
+[node name="EndScreen" type="CanvasLayer"]
+process_mode = 3
+layer = 20
+script = ExtResource("1_end")
+
+[node name="Root" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Dim" type="ColorRect" parent="Root"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.85)
+
+[node name="Center" type="CenterContainer" parent="Root"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Box" type="VBoxContainer" parent="Root/Center"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 18
+
+[node name="Title" type="Label" parent="Root/Center/Box"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.3, 0.3, 1)
+theme_override_font_sizes/font_size = 72
+text = "BOSS DEFEATED"
+horizontal_alignment = 1
+
+[node name="Subtitle" type="Label" parent="Root/Center/Box"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Dungeon cleared"
+horizontal_alignment = 1
+
+[node name="Stats" type="Label" parent="Root/Center/Box"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 26
+text = "Time  0:00
+Enemies defeated  0"
+horizontal_alignment = 1
+
+[node name="Prompt" type="Label" parent="Root/Center/Box"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "Press any key to enter the next dungeon"
+horizontal_alignment = 1

@@ -131,3 +131,16 @@ const LIST := [
 		"knockback_scale": 2.2,
 	},
 ]
+
+# What the player fights with when both weapon slots are empty
+const UNARMED := {
+	"name": "Fists",
+	"type": Type.MELEE,
+	"damage": 4,
+	"cooldown": 0.35,
+	"melee_range": 1.8,
+	"melee_arc": 100.0,
+	"windup": 0.0,
+	"lunge": 0.2,
+	"knockback_scale": 0.6,
+}

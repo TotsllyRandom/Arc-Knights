@@ -1,5 +1,8 @@
 extends CharacterBody3D
 
+# Sent when this enemy dies (the boss uses it to end the run)
+signal died(enemy)
+
 # Physics layers: 1 is the world (floor, walls, doors, player), 2 is active enemies
 const WORLD_COLLISION_LAYER := 1
 const ACTIVE_COLLISION_LAYER := 2
@@ -10,12 +13,14 @@ const REPATH_INTERVAL := 0.25
 const WAYPOINT_REACHED_DISTANCE := 0.35
 
 @export var room := 0
+@export var max_health := 20
 @export var speed := 4.0
 # How fast a hit shoves the enemy back, and how quickly that shove fades (units per second squared)
 @export var knockback_speed := 10.0
 @export var knockback_decay := 40.0
 
 var active := false
+var dead := false
 var knockback := Vector3.ZERO
 var path := PackedVector3Array()
 var path_index := 0
@@ -23,20 +28,20 @@ var repath_timer := 0.0
 
 var health = 20:
 	set(new):
-		if new <= 0:
-			health = 0
-		else:
-			health = new
-		if health == 0:
-			queue_free()
+		health = max(new, 0)
+		_health_changed()
+		if health == 0 and not dead:
+			dead = true
+			_die()
 
 
 func _ready() -> void:
 	add_to_group("enemies")
+	health = max_health
 	# Hidden and untouchable until the player reveals this enemy's room
 	visible = false
 	collision_layer = 0
-	# Enemies now collide with the world (walls, doors, floor, player) and with each other
+	# Enemies collide with the world (walls, doors, floor, player) and with each other
 	collision_mask = WORLD_COLLISION_LAYER | ACTIVE_COLLISION_LAYER
 	# Spread out the first route calculation so enemies don't all repath on the same frame
 	repath_timer = randf() * REPATH_INTERVAL
@@ -60,6 +65,17 @@ func _activate() -> void:
 	collision_layer = ACTIVE_COLLISION_LAYER
 	if RoomMaker.reveal_room.is_connected(_on_room_revealed):
 		RoomMaker.reveal_room.disconnect(_on_room_revealed)
+
+
+# Called whenever health changes. The boss uses this to update its health bar.
+func _health_changed() -> void:
+	pass
+
+
+# Called once when health reaches 0. The boss could play a death effect here.
+func _die() -> void:
+	died.emit(self)
+	queue_free()
 
 
 # hit_direction is the direction the attack was travelling, which is the way the enemy gets shoved.
